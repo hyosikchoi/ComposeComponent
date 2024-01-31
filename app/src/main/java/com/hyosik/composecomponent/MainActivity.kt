@@ -1,6 +1,7 @@
 package com.hyosik.composecomponent
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.hyosik.composecomponent.ui.component.HSButton
+import com.hyosik.composecomponent.ui.component.HSText
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
 
 class MainActivity : ComponentActivity() {
@@ -25,46 +28,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeComponentTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                HSButton(onButtonClicked = {
+                    Toast.makeText(this, "Send clicked", Toast.LENGTH_SHORT).show()
+                })
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
 
-    // 1. color 지정
-//    Text(color = Color.Red , text = "Hello $name")
-
-    // 2. color 객체로 해쉬값으로 지정 (ARGB)
-//    Text(color = Color(0xffff9944) , text = "Hello $name")
-
-    // fontsize, fontweight, fontfamily , letterSpacing(글자간 간격)
-    // textDecoration (밑줄과 같은 옵션을 설정할 수 있다.)
-    Text(
-        modifier = Modifier.width(300.dp),
-        text = "Hello $name\nHello $name\nHello $name\n",
-        fontSize = 30.sp,
-        fontWeight = FontWeight.Bold,
-        fontFamily = FontFamily.Cursive,
-        letterSpacing = 2.sp,
-        maxLines = 2,
-        textDecoration = TextDecoration.Underline,
-        textAlign = TextAlign.Center
-    )
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     ComposeComponentTheme {
-        Greeting("Android")
+        HSButton(onButtonClicked = {})
     }
 }
