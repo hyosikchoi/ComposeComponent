@@ -24,6 +24,7 @@ import com.hyosik.composecomponent.ui.component.HSModifier
 import com.hyosik.composecomponent.ui.component.HSSurface
 import com.hyosik.composecomponent.ui.component.HSText
 import com.hyosik.composecomponent.ui.layout.HSBox
+import com.hyosik.composecomponent.ui.layout.HSColumn
 import com.hyosik.composecomponent.ui.layout.HSRow
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
 
@@ -46,6 +47,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     ComposeComponentTheme {
-        HSRow()
+        HSColumn()
     }
 }
