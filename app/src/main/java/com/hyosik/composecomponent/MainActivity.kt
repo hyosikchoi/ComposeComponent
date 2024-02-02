@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hyosik.composecomponent.ui.component.HSButton
+import com.hyosik.composecomponent.ui.component.HSModifier
 import com.hyosik.composecomponent.ui.component.HSText
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
 
@@ -42,6 +43,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     ComposeComponentTheme {
-        HSButton(onButtonClicked = {})
+        HSModifier()
     }
 }
