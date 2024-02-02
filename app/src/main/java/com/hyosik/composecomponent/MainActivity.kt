@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeComponentTheme {
-                HSCoilImage()
+                HSCheckBox()
             }
         }
     }
@@ -46,20 +46,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     ComposeComponentTheme {
-//      Column {
-//          // resource id 를 가져와서 세팅 하는법
-//          Image(
-//              painter = painterResource(id = R.drawable.broly),
-//              contentDescription = "브로리"
-//          )
-//
-//          // vector 이미지로 세팅하는법
-//          // Filled 만 치고 엔터 눌러도 된다.
-//          Image(
-//              imageVector = Icons.Filled.Settings,
-//              contentDescription = "세팅"
-//          )
-//      }
-        HSCoilImage()
+        HSCheckBox()
     }
 }
