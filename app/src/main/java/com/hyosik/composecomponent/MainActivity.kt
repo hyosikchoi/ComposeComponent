@@ -46,6 +46,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     ComposeComponentTheme {
-        HSTextField()
+        HSTopAppBar()
     }
 }
