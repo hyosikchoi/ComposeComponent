@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeComponentTheme {
-                HSSlotApi()
+                HSScaffold()
             }
         }
     }
