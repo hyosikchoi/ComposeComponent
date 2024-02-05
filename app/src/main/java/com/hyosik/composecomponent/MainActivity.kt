@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeComponentTheme {
-                HSCheckBox()
+                HSSlotApi()
             }
         }
     }
@@ -46,6 +46,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     ComposeComponentTheme {
-        HSTopAppBar()
+        HSSlotApi()
     }
 }
