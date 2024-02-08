@@ -31,6 +31,7 @@ import com.hyosik.composecomponent.ui.component.*
 import com.hyosik.composecomponent.ui.layout.HSBox
 import com.hyosik.composecomponent.ui.layout.HSBoxWithConstraints
 import com.hyosik.composecomponent.ui.layout.HSColumn
+import com.hyosik.composecomponent.ui.layout.HSConstraintLayout
 import com.hyosik.composecomponent.ui.layout.HSRow
 import com.hyosik.composecomponent.ui.model.ItemData
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
@@ -40,7 +41,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeComponentTheme {
-                CatalogEx(items)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colors.background
+                ) {
+                    HSConstraintLayout()
+                }
+
             }
         }
     }
@@ -131,3 +138,18 @@ val items = listOf<ItemData>(
         description = "드래곤볼 크리링 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
     )
 )
+
+
+@Preview(showBackground = true)
+@Composable
+fun ConstraintPreview() {
+    ComposeComponentTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+            HSConstraintLayout()
+        }
+    }
+
+}
