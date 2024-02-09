@@ -161,3 +161,14 @@ fun ConstraintChainPreview() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun CardExPreview() {
+    ComposeComponentTheme() {
+        Surface(
+        ) {
+            HSCard()
+        }
+    }
+}
+
