@@ -172,3 +172,14 @@ fun CardExPreview() {
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun CanvasPreview() {
+    ComposeComponentTheme() {
+        Surface(
+        ) {
+            HSCanvas()
+        }
+    }
+}
+
