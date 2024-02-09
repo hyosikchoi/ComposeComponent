@@ -28,11 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
 import com.hyosik.composecomponent.ui.component.*
-import com.hyosik.composecomponent.ui.layout.HSBox
-import com.hyosik.composecomponent.ui.layout.HSBoxWithConstraints
-import com.hyosik.composecomponent.ui.layout.HSColumn
-import com.hyosik.composecomponent.ui.layout.HSConstraintLayout
-import com.hyosik.composecomponent.ui.layout.HSRow
+import com.hyosik.composecomponent.ui.layout.*
 import com.hyosik.composecomponent.ui.model.ItemData
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
 
@@ -151,5 +147,17 @@ fun ConstraintPreview() {
             HSConstraintLayout()
         }
     }
-
 }
+
+@Preview(showBackground = true)
+@Composable
+fun ConstraintChainPreview() {
+    ComposeComponentTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HSConstraintLayoutChain()
+        }
+    }
+}
+
