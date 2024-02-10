@@ -9,8 +9,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
 
 @Composable
@@ -52,7 +50,7 @@ fun HSDropDown() {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun HSDropDownPreview() {
     ComposeComponentTheme {
         HSDropDown()
     }
