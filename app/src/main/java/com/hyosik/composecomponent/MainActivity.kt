@@ -29,10 +29,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.ViewModel
 import com.hyosik.composecomponent.ui.component.*
 import com.hyosik.composecomponent.ui.layout.*
 import com.hyosik.composecomponent.ui.model.ItemData
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,21 +52,21 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+/** viewModel 에서는 remember 를 사용하지 않는다. */
+/** remember 는 Composable 의 수명주기에 맞추기 위함이기 때문이다. */
+class ToDoViewModel : ViewModel() {
+    val text = mutableStateOf("")
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@Composable
-fun TopLevel() {
-    val (text, setText) = remember { mutableStateOf("") }
-    val toDoList = remember { mutableStateListOf<ToDoData>() }
+    val toDoList = mutableStateListOf<ToDoData>()
 
-    val onSubmit: (String) -> Unit = { text ->
+    val onSubmit: (String) -> Unit = {
         val key = (toDoList.lastOrNull()?.key ?: 0) + 1
-        toDoList.add(ToDoData(key = key, text = text))
-        setText("")
+        toDoList.add(ToDoData(key = key, text = it))
+        text.value = ""
     }
 
     val onToggle: (Int, Boolean) -> Unit = { key, checked ->
-       val i = toDoList.indexOfFirst { it.key == key }
+        val i = toDoList.indexOfFirst { it.key == key }
         toDoList[i] = toDoList[i].copy(done = checked)
     }
 
@@ -77,26 +79,32 @@ fun TopLevel() {
         val i = toDoList.indexOfFirst { it.key == key }
         toDoList[i] = toDoList[i].copy(key = key, text = text)
     }
-    // 단계 4: `onSubmit`, `onEdit`, `onToggle`, `onDelete`를
-    // 만들어 `ToDo`에 연결합니다.
+
+}
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Composable
+fun TopLevel(viewModel: ToDoViewModel = viewModel()) {
 
     Scaffold {
         Column {
             ToDoInput(
-                text = text,
-                onTextChange = setText,
-                onSubmit = onSubmit
+                text = viewModel.text.value,
+                onTextChange = {
+                    viewModel.text.value = it
+                },
+                onSubmit = viewModel.onSubmit
             )
             // 단계 3: `LazyColumn`으로 `toDoList`를 표시합시다.
             /** `key`를 `toDoData`의 `key`를 사용합니다. */
             /** diffUtil 에서의 areItemSame 과 비슷하다고 볼 수 있다. */
             LazyColumn {
-                items(toDoList, key = {it.key}) { todoData: ToDoData ->
+                items(viewModel.toDoList, key = {it.key}) { todoData: ToDoData ->
                     ToDo(
                         toDoData = todoData,
-                        onToggle = onToggle,
-                        onDelete = onDelete,
-                        onEdit = onEdit
+                        onToggle = viewModel.onToggle,
+                        onDelete = viewModel.onDelete,
+                        onEdit = viewModel.onEdit
                     )
                 }
             }
