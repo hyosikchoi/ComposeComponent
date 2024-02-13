@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.res.ResourcesCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hyosik.composecomponent.ui.component.*
 import com.hyosik.composecomponent.ui.layout.*
@@ -55,29 +58,43 @@ class MainActivity : ComponentActivity() {
 /** viewModel 에서는 remember 를 사용하지 않는다. */
 /** remember 는 Composable 의 수명주기에 맞추기 위함이기 때문이다. */
 class ToDoViewModel : ViewModel() {
-    val text = mutableStateOf("")
+//    val text = mutableStateOf("")
+    private val _text = MutableLiveData("")
+    val text: LiveData<String> get() = _text
+    val setText: (String) -> Unit = {
+        _text.value = it
+    }
 
-    val toDoList = mutableStateListOf<ToDoData>()
-
-    val onSubmit: (String) -> Unit = {
-        val key = (toDoList.lastOrNull()?.key ?: 0) + 1
-        toDoList.add(ToDoData(key = key, text = it))
-        text.value = ""
+//    val toDoList = mutableStateListOf<ToDoData>()
+    private val _rawToDoList = mutableListOf<ToDoData>()
+    private val _toDoList = MutableLiveData<List<ToDoData>>(_rawToDoList)
+    val toDoList: LiveData<List<ToDoData>> get() = _toDoList
+    /** mutableStateListOf - 추가,삭제,대입 -> UI 가 갱신이 됩니다. 각 항목의 필드가 바뀌엇을 때 -> 갱신이 안되는 문제. */
+    /** LiveData<List<X>>.observeAsState() - List 가 통채로 다른 List로 바뀌었을 때만 State가 갱신된다. */
+    /** 그러므로 LiveData 를 이용해서 리스트를 다루면서 State 로 바꾸는 것은 좀 비효율 적이다. */
+   val onSubmit: (String) -> Unit = {
+        val key = (_rawToDoList.lastOrNull()?.key ?: 0) + 1
+        _rawToDoList.add(ToDoData(key = key, text = it))
+        _toDoList.value = _rawToDoList.toMutableList()
+        _text.value = ""
     }
 
     val onToggle: (Int, Boolean) -> Unit = { key, checked ->
-        val i = toDoList.indexOfFirst { it.key == key }
-        toDoList[i] = toDoList[i].copy(done = checked)
+        val i = _rawToDoList.indexOfFirst { it.key == key }
+        _rawToDoList[i] = _rawToDoList[i].copy(done = checked)
+        _toDoList.value = _rawToDoList.toMutableList()
     }
 
     val onDelete: (Int) -> Unit = { key ->
-        val i = toDoList.indexOfFirst { it.key == key }
-        toDoList.removeAt(i)
+        val i = _rawToDoList.indexOfFirst { it.key == key }
+        _rawToDoList.removeAt(i)
+        _toDoList.value = _rawToDoList.toMutableList()
     }
 
     val onEdit: (Int, String) -> Unit = { key, text ->
-        val i = toDoList.indexOfFirst { it.key == key }
-        toDoList[i] = toDoList[i].copy(key = key, text = text)
+        val i = _rawToDoList.indexOfFirst { it.key == key }
+        _rawToDoList[i] = _rawToDoList[i].copy(key = key, text = text)
+        _toDoList.value = _rawToDoList.toMutableList()
     }
 
 }
@@ -89,17 +106,17 @@ fun TopLevel(viewModel: ToDoViewModel = viewModel()) {
     Scaffold {
         Column {
             ToDoInput(
-                text = viewModel.text.value,
-                onTextChange = {
-                    viewModel.text.value = it
-                },
+                text = viewModel.text.observeAsState("").value,
+                onTextChange = viewModel.setText,
                 onSubmit = viewModel.onSubmit
             )
             // 단계 3: `LazyColumn`으로 `toDoList`를 표시합시다.
             /** `key`를 `toDoData`의 `key`를 사용합니다. */
             /** diffUtil 에서의 areItemSame 과 비슷하다고 볼 수 있다. */
+            // LazyColumn items 내부에서는 Composable 함수인 observeAsState 를 사용할 수 없으므로 밖에서 변수로 빼서 사용한다.
+            val items: List<ToDoData> = viewModel.toDoList.observeAsState(emptyList()).value
             LazyColumn {
-                items(viewModel.toDoList, key = {it.key}) { todoData: ToDoData ->
+                items(items, key = {it.key}) { todoData: ToDoData ->
                     ToDo(
                         toDoData = todoData,
                         onToggle = viewModel.onToggle,

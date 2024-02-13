@@ -71,4 +71,7 @@ dependencies {
     // viewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 
+    // runtime-livedata
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_ui_version"
+
 }
