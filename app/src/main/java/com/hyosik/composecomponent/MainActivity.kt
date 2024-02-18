@@ -38,7 +38,9 @@ import com.hyosik.composecomponent.ui.layout.*
 import com.hyosik.composecomponent.ui.model.ItemData
 import com.hyosik.composecomponent.ui.theme.ComposeComponentTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    MyNav()
+                    ReposScreen()
                 }
 
             }
@@ -338,5 +340,23 @@ val items = listOf<ItemData>(
     )
 )
 
+/* ============================================================================ */
 
+@Composable
+fun ReposScreen(viewModel: GithubViewModel = viewModel()) {
+    LazyColumn{
+        
+        item { 
+            Button(onClick = {
+                viewModel.getRepos()
+            }) {
+                Text(text = "레포지토리 가져오기")
+            }
+        }
+        
+        items(viewModel.repos) {repo ->
+             Text(repo.name)       
+        }
+    }
+}
 
