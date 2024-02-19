@@ -39,6 +39,7 @@ class PokemonViewModel @Inject constructor(
 
                 override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Response.Result> {
                     try {
+
                         // 다음 페이지
                         val pokemons = if (params.key != null) {
                             pokeAPI.getPokemons(params.key as Int, params.loadSize)
@@ -51,7 +52,7 @@ class PokemonViewModel @Inject constructor(
                         return LoadResult.Page(
                             data = pokemons.results,
                             prevKey = pokemons.previous?.substringAfter("offset=")?.substringBefore("&")?.toInt(),
-                            nextKey = pokemons.previous?.substringAfter("offset=")?.substringBefore("&")?.toInt()
+                            nextKey = pokemons.next?.substringAfter("offset=")?.substringBefore("&")?.toInt()
                         )
                     } catch (e: Exception) {
                         Log.e("EEE", "error: $e")
