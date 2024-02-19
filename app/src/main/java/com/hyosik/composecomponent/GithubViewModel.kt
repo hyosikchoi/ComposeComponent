@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GithubViewModel @Inject constructor(
-    private val githubService: GithubService
+//    private val githubService: GithubService
 ) : ViewModel() {
 
     val repos = mutableStateListOf<Repo>()
@@ -18,8 +18,8 @@ class GithubViewModel @Inject constructor(
     fun getRepos() {
         repos.clear()
         viewModelScope.launch {
-            val result = githubService.listRepos(user = "dalinaum")
-            repos.addAll(result)
+//            val result = githubService.listRepos(user = "dalinaum")
+//            repos.addAll(result)
         }
     }
 
