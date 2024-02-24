@@ -41,10 +41,9 @@ fun PokeLevel(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ) {
-
     NavHost(
         navController = navController,
-        "Home",
+        startDestination = "Home",
         modifier = modifier
     ) {
         composable("Home") {

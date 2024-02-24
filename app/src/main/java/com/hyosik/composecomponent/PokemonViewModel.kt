@@ -64,9 +64,9 @@ class PokemonViewModel @Inject constructor(
         }
     ).flow
 
-    fun getPokemon(pokemonId: Int) {
+    fun getPokemon(pokemonId: Int) =
         viewModelScope.launch {
             pokemonResult = pokeAPI.getPokemon(pokemonId)
         }
-    }
+
 }
